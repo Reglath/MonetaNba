@@ -24,6 +24,9 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.monetanba.data.domain.model.Player
 
+/**
+ * Komponenta jednoho řádku v seznamu hráčů, zobrazující základní info a fotku.
+ */
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun PlayerListItem(

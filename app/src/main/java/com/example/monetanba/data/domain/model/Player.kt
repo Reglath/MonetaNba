@@ -1,5 +1,8 @@
 package com.example.monetanba.data.domain.model
 
+/**
+ * Reprezentuje detailní informace o hráči NBA.
+ */
 data class Player(
     val id: Int,
     val name: String,

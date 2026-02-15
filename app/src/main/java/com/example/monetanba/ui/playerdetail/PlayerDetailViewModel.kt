@@ -11,6 +11,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel pro obrazovku detailu hráče.
+ * Zajišťuje načtení dat na základě ID z [SavedStateHandle].
+ */
 @HiltViewModel
 class PlayerDetailViewModel @Inject constructor(
     private val repository: NbaRepository,

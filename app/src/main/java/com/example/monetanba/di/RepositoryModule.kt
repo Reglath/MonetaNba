@@ -8,6 +8,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * Modul pro mapování rozhraní repozitářů na jejich konkrétní implementace.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {

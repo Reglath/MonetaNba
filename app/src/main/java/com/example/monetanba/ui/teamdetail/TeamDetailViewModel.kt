@@ -11,6 +11,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel pro obrazovku detailu teamu.
+ * Zajišťuje načtení dat na základě ID z [SavedStateHandle].
+ */
 @HiltViewModel
 class TeamDetailViewModel @Inject constructor(
     private val repository: NbaRepository,
@@ -25,6 +29,8 @@ class TeamDetailViewModel @Inject constructor(
     init {
         if (teamId != -1) {
             loadTeamDetail(teamId)
+        } else {
+            _state.update { it.copy(isLoading = false, error = "Chybí ID teamu") }
         }
     }
 

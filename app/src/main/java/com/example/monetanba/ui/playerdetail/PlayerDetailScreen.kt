@@ -22,7 +22,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -39,8 +39,11 @@ import com.example.monetanba.ui.theme.MonetaNbaTheme
 import com.example.monetanba.ui.util.AutoRetryEffect
 import com.example.monetanba.ui.util.ClickableDetailRow
 import com.example.monetanba.ui.util.DetailRow
-import kotlinx.coroutines.delay
 
+/**
+ * Composable funkce pro zobrazení podrobných informací o konkrétním hráči.
+ * Podporuje adaptivní rozvržení pro portrait i landscape.
+ */
 @Composable
 fun PlayerDetailScreen(viewModel: PlayerDetailViewModel, onNavigateToTeam: (Int) -> Unit) {
     val state by viewModel.state.collectAsState()
@@ -60,17 +63,27 @@ fun PlayerDetailContent(
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     if (state.isLoading) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag("loader"),
+            contentAlignment = Alignment.Center
+        ) {
             CircularProgressIndicator()
         }
     }
 
     state.error?.let { error ->
-        Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
-                text = state.error ?: "Chyba připojení",
+                text = state.error,
                 color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.testTag("error_text")
             )
             Spacer(modifier = Modifier.height(8.dp))
             CircularProgressIndicator(
@@ -116,7 +129,7 @@ fun PlayerDetailContent(
                     .verticalScroll(rememberScrollState())
             ) {
                 GlideImage(
-                    model = "https://picsum.photos/seed/${player.id}/400",
+                    model = player.imageUrl,
                     contentDescription = "Fotka hráče ${player.name}",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -138,7 +151,11 @@ fun PlayerDetailCard(
     player: Player,
     onNavigateToTeam: (Int) -> Unit
 ) {
-    Text(text = player.name, style = MaterialTheme.typography.headlineSmall)
+    Text(
+        text = player.name,
+        style = MaterialTheme.typography.headlineSmall,
+        modifier = Modifier.testTag("player_name")
+    )
 
     Spacer(modifier = Modifier.height(8.dp))
 
@@ -182,7 +199,7 @@ fun PlayerDetailPreview() {
                     draftInfo = "2003 R1 Pick 1",
                     teamName = "Los Angeles Lakers",
                     teamId = 14,
-                    imageUrl = "https://picsum.photos/seed/1/400"
+                    imageUrl = "https://ui-avatars.com/api/?name=Lebron+James&background=random&size=400"
                 ),
 
                 ),

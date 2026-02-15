@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel pro obrazovku detailu hráče.
+ */
 @HiltViewModel
 class PlayerListViewModel @Inject constructor(
     private val repository: NbaRepository

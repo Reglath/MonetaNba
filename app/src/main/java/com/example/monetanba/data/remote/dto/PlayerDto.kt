@@ -3,6 +3,9 @@ package com.example.monetanba.data.remote.dto
 import com.example.monetanba.data.domain.model.Player
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Datový transfer objekt (DTO) reprezentující hráče tak, jak přichází z API JSONu.
+ */
 data class PlayerDto(
     @SerializedName("id") val id: Int,
     @SerializedName("first_name") val firstName: String?,
@@ -19,6 +22,11 @@ data class PlayerDto(
     @SerializedName("team") val team: TeamDto?
 )
 
+/**
+ * Rozšiřující funkce, která transformuje [PlayerDto] na doménový model [Player].
+ * Provádí čištění dat (null-safety) a formátování (např. složení informací o draftu).
+ * * @return Inicializovaný objekt [Player] připravený pro UI vrstvu.
+ */
 fun PlayerDto.toDomain(): Player {
     val draft = if (draftYear != null) {
         "$draftYear (Kolo: ${draftRound ?: "N/A"}, Číslo: ${draftNumber ?: "N/A"})"
@@ -36,6 +44,6 @@ fun PlayerDto.toDomain(): Player {
         draftInfo = draft,
         teamName = team?.fullName ?: "Neznámý tým",
         teamId = team?.id ?: -1,
-        imageUrl = "https://picsum.photos/seed/${this.id}/400"
+        imageUrl = "https://ui-avatars.com/api/?name=$firstName+$lastName&background=random&size=400",
     )
 }

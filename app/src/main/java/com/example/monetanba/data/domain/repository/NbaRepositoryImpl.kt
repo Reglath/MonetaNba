@@ -6,6 +6,9 @@ import com.example.monetanba.data.remote.NbaApi
 import com.example.monetanba.data.remote.dto.toDomain
 import javax.inject.Inject
 
+/**
+ * Implementace rozhraní [NbaRepository].
+ */
 class NbaRepositoryImpl @Inject constructor(
     private val api: NbaApi
 ) : NbaRepository {

@@ -31,6 +31,11 @@ import com.example.monetanba.data.domain.model.Player
 import com.example.monetanba.ui.theme.MonetaNbaTheme
 import kotlinx.coroutines.delay
 
+/**
+ * Hlavní obrazovka aplikace zobrazující stránkovaný seznam hráčů NBA.
+ * Obsahuje logiku pro nekonečné scrollování, automatický refresh při error 429,
+ * a navigaci na detail hráče.
+ */
 @Composable
 fun PlayerListScreen(
     viewModel: PlayerListViewModel,
@@ -58,7 +63,8 @@ fun PlayerListContent(
     val shouldLoadMore by remember {
         derivedStateOf {
             val totalItemsCount = listState.layoutInfo.totalItemsCount
-            val lastVisibleItemIndex = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            val lastVisibleItemIndex =
+                listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
 
             lastVisibleItemIndex >= totalItemsCount - 5 && totalItemsCount > 0
         }
@@ -81,12 +87,12 @@ fun PlayerListContent(
             modifier = Modifier
                 .fillMaxSize()
                 .then(
-                if (isLandscape) {
-                    Modifier.padding(horizontal = 60.dp)
-                } else {
-                    Modifier
-                }
-            )
+                    if (isLandscape) {
+                        Modifier.padding(horizontal = 60.dp)
+                    } else {
+                        Modifier
+                    }
+                )
         ) {
             items(
                 items = state.players,
@@ -114,7 +120,7 @@ fun PlayerListContent(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = state.error ?: "Chyba připojení",
+                            text = state.error,
                             color = MaterialTheme.colorScheme.error,
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -149,7 +155,7 @@ fun PlayerListPreview() {
                         draftInfo = "2003 R1 Pick 1",
                         teamName = "Los Angeles Lakers",
                         teamId = 14,
-                        imageUrl = "https://picsum.photos/seed/1/400"
+                        imageUrl = "https://ui-avatars.com/api/?name=LeBron+James&background=random&size=400"
                     ),
                     Player(
                         id = 115,
@@ -163,7 +169,7 @@ fun PlayerListPreview() {
                         draftInfo = "2009 R1 Pick 7",
                         teamName = "Golden State Warriors",
                         teamId = 10,
-                        imageUrl = "https://picsum.photos/seed/2/400"
+                        imageUrl = "https://ui-avatars.com/api/?name=Stephen+Curry&background=random&size=400"
                     )
                 )
             ),

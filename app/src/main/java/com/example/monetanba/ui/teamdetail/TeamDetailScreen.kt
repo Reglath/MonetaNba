@@ -21,7 +21,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -29,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -37,8 +37,11 @@ import com.example.monetanba.data.domain.model.Team
 import com.example.monetanba.ui.theme.MonetaNbaTheme
 import com.example.monetanba.ui.util.AutoRetryEffect
 import com.example.monetanba.ui.util.DetailRow
-import kotlinx.coroutines.delay
 
+/**
+ * Composable funkce pro zobrazení podrobných informací o konkrétním teamu.
+ * Podporuje adaptivní rozvržení pro portrait i landscape.
+ */
 @Composable
 fun TeamDetailScreen(viewModel: TeamDetailViewModel) {
     val state by viewModel.state.collectAsState()
@@ -55,17 +58,27 @@ fun TeamDetailContent(state: TeamDetailUiState) {
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     if (state.isLoading) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag("loader"),
+            contentAlignment = Alignment.Center
+        ) {
             CircularProgressIndicator()
         }
     }
 
     state.error?.let { error ->
-        Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
-                text = state.error ?: "Chyba připojení",
+                text = state.error,
                 color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.testTag("error_text")
             )
             Spacer(modifier = Modifier.height(8.dp))
             CircularProgressIndicator(
@@ -83,7 +96,7 @@ fun TeamDetailContent(state: TeamDetailUiState) {
                     .padding(vertical = 16.dp, horizontal = 60.dp)
             ) {
                 GlideImage(
-                    model = "https://picsum.photos/seed/${team.id}/400",
+                    model = team.imageUrl,
                     contentDescription = "Logo teamu ${team.name}",
                     modifier = Modifier
                         .weight(1f)
@@ -95,14 +108,15 @@ fun TeamDetailContent(state: TeamDetailUiState) {
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(vertical = 16.dp, horizontal = 60.dp)
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
                         .verticalScroll(rememberScrollState())
                 ) {
                     TeamDetailCard(team)
                 }
             }
-        }
-        else {
+        } else {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -110,7 +124,7 @@ fun TeamDetailContent(state: TeamDetailUiState) {
                     .verticalScroll(rememberScrollState())
             ) {
                 GlideImage(
-                    model = "https://picsum.photos/seed/${team.id}/400",
+                    model = team.imageUrl,
                     contentDescription = "Fotka hráče ${team.name}",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -128,8 +142,12 @@ fun TeamDetailContent(state: TeamDetailUiState) {
 }
 
 @Composable
-fun TeamDetailCard(team: Team){
-    Text(text = team.fullName, style = MaterialTheme.typography.headlineSmall)
+fun TeamDetailCard(team: Team) {
+    Text(
+        text = team.fullName,
+        style = MaterialTheme.typography.headlineSmall,
+        modifier = Modifier.testTag("team_name")
+    )
 
     Spacer(modifier = Modifier.height(8.dp))
 
@@ -158,7 +176,7 @@ fun TeamDetailPreview() {
                     city = "Los Angeles",
                     conference = "West",
                     division = "Pacific",
-                    imageUrl = "https://picsum.photos/seed/1/400"
+                    imageUrl = "https://ui-avatars.com/api/?name=Lakers&background=random&size=400"
                 )
             )
         )

@@ -5,6 +5,9 @@ import com.example.monetanba.data.remote.dto.PlayerDto
 import com.example.monetanba.data.remote.dto.TeamDto
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Response classy pro převod api dat do domain modelů.
+ */
 data class PlayerListResponse(
     @SerializedName("data") val data: List<PlayerDto>,
     @SerializedName("meta") val meta: MetaDto

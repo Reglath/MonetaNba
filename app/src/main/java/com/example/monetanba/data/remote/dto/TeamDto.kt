@@ -3,6 +3,9 @@ package com.example.monetanba.data.remote.dto
 import com.example.monetanba.data.domain.model.Team
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Datový transfer objekt (DTO) reprezentující team tak, jak přichází z API JSONu.
+ */
 data class TeamDto(
     @SerializedName("id") val id: Int,
     @SerializedName("conference") val conference: String?,
@@ -13,6 +16,11 @@ data class TeamDto(
     @SerializedName("abbreviation") val abbreviation: String?
 )
 
+/**
+ * Rozšiřující funkce, která transformuje [TeamDto] na doménový model [Team].
+ * Provádí čištění dat (null-safety) a formátování (např. složení informací o draftu).
+ * * @return Inicializovaný objekt [Team] připravený pro UI vrstvu.
+ */
 fun TeamDto.toDomain(): Team {
     return Team(
         id = id,
@@ -22,6 +30,6 @@ fun TeamDto.toDomain(): Team {
         city = city ?: "Neznámé město",
         conference = conference ?: "N/A",
         division = division ?: "N/A",
-        imageUrl = "https://picsum.photos/seed/${this.id}/400"
+        imageUrl = "https://ui-avatars.com/api/?name=$abbreviation&background=random&size=400&length=3"
     )
 }

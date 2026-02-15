@@ -22,6 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
+/**
+ * Sada znovupoužitelných UI komponent, efektů a mapperů pro sjednocení vzhledu a chování aplikace.
+ * Obsahuje:
+ * - [DetailRow] a [ClickableDetailRow] pro zobrazení informací v detailech.
+ * - [AutoRetryEffect] pro automatické znovunačtení při chybě (např. limit API).
+ */
 @Composable
 fun DetailRow(label: String, value: String) {
     Row(modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp)) {
@@ -77,16 +83,6 @@ fun AutoRetryEffect(
             val delayTime = 5000L
             delay(delayTime)
             onRetry()
-        }
-    }
-}
-
-object ErrorMapper {
-    fun map(e: Throwable): String {
-        return when {
-            e.message?.contains("429") == true -> "Příliš mnoho požadavků (Limit API). Zkouším to znovu za chvíli..."
-            e.message?.contains("Unable to resolve host") == true -> "Žádné připojení k internetu."
-            else -> e.localizedMessage ?: "Došlo k neznámé chybě."
         }
     }
 }

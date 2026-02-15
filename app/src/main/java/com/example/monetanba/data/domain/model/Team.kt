@@ -1,5 +1,8 @@
 package com.example.monetanba.data.domain.model
 
+/**
+ * Reprezentuje informace o týmu NBA v doménové vrstvě.
+ */
 data class Team(
     val id: Int,
     val fullName: String,

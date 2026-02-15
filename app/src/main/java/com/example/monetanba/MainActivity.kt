@@ -29,6 +29,10 @@ import com.example.monetanba.ui.teamdetail.TeamDetailViewModel
 import com.example.monetanba.ui.theme.MonetaNbaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Hlavní aktivita aplikace, která hostuje NavHost a definuje NavGraph,
+ * včetně animací přechodů mezi obrazovkami.
+ */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +42,9 @@ class MainActivity : ComponentActivity() {
             MonetaNbaTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Surface(
-                        modifier = Modifier.fillMaxSize().padding(innerPadding),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
                         color = MaterialTheme.colorScheme.background
                     ) {
                         val navController = rememberNavController()
@@ -54,7 +60,7 @@ class MainActivity : ComponentActivity() {
                             },
                             exitTransition = {
                                 slideOutOfContainer(
-                                    towards = AnimatedContentTransitionScope.SlideDirection.Start  ,
+                                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
                                     animationSpec = tween(400)
                                 ) + fadeOut(animationSpec = tween(400))
                             },
@@ -76,14 +82,20 @@ class MainActivity : ComponentActivity() {
                                 PlayerListScreen(
                                     viewModel = viewModel,
                                     onNavigateToDetail = { playerId ->
-                                        navController.navigate(Screen.PlayerDetail.createRoute(playerId))
+                                        navController.navigate(
+                                            Screen.PlayerDetail.createRoute(
+                                                playerId
+                                            )
+                                        )
                                     }
                                 )
                             }
 
                             composable(
                                 route = Screen.PlayerDetail.route,
-                                arguments = listOf(navArgument("playerId") { type = NavType.IntType })
+                                arguments = listOf(navArgument("playerId") {
+                                    type = NavType.IntType
+                                })
                             ) {
                                 val viewModel: PlayerDetailViewModel = hiltViewModel()
                                 PlayerDetailScreen(

@@ -1,5 +1,6 @@
 package com.example.monetanba.di
 
+import com.example.monetanba.BuildConfig
 import com.example.monetanba.data.remote.NbaApi
 import dagger.Module
 import dagger.Provides
@@ -10,6 +11,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+/**
+ * Dagger Hilt modul pro poskytování instancí souvisejících se síťovou komunikací.
+ * * Modul je instalován do [SingletonComponent], aby se instance
+ * [OkHttpClient] a [NbaApi] sdílely v rámci celé aplikace.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
