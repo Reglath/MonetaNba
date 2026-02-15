@@ -1,0 +1,19 @@
+package com.example.monetanba.data.remote
+
+import com.example.monetanba.data.remote.dto.MetaDto
+import com.example.monetanba.data.remote.dto.PlayerDto
+import com.example.monetanba.data.remote.dto.TeamDto
+import com.google.gson.annotations.SerializedName
+
+data class PlayerListResponse(
+    @SerializedName("data") val data: List<PlayerDto>,
+    @SerializedName("meta") val meta: MetaDto
+)
+
+data class PlayerDetailResponse(
+    @SerializedName("data") val data: PlayerDto
+)
+
+data class TeamDetailResponse(
+    @SerializedName("data") val data: TeamDto
+)
