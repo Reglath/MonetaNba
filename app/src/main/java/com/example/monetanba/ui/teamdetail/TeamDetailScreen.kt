@@ -58,11 +58,12 @@ fun TeamDetailContent(state: TeamDetailUiState) {
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     if (state.isLoading) {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .testTag("loader"),
-            contentAlignment = Alignment.Center
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CircularProgressIndicator()
         }
