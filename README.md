@@ -1,3 +1,3 @@
 interview task
 
-Api key is not public.
+images use placeholder api
